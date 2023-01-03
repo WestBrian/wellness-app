@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider theme={theme}>
       <Box className={inter.className}>
         <Navbar />
-        <Box as={'main'} p={8}>
+        <Box as={'main'} p={8} mt={'74px'}>
           <Component {...pageProps} />
         </Box>
       </Box>

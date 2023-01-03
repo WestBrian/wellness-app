@@ -6,6 +6,9 @@ export const theme = extendTheme({
       'html, body': {
         h: 'full',
       },
+      body: {
+        WebkitTapHighlightColor: 'transparent',
+      },
     },
   },
 })

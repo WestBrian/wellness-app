@@ -35,6 +35,9 @@ export const Navbar: FC<NavbarProps> = ({}) => {
       w={'full'}
       h={'74px'}
       p={4}
+      position={'fixed'}
+      top={0}
+      left={0}
       bg={'rgba(255, 255, 255, 0.25)'}
       shadow={'sm'}
       backdropFilter={'blur(4px)'}
