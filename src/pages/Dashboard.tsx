@@ -29,7 +29,7 @@ export const Dashboard: FC<DashboardProps> = ({}) => {
           {user.displayName}
         </Box>
       </Heading>
-      <MoodTracker />
+      <MoodTracker user={user} />
     </VStack>
   )
 }
