@@ -1,7 +1,8 @@
 import Head from 'next/head'
+import { RequireAuth } from '../src/components/RequireAuth'
 import { Dashboard } from '../src/pages/Dashboard'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Head>
@@ -14,7 +15,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Dashboard />
+        <RequireAuth>
+          <Dashboard />
+        </RequireAuth>
       </main>
     </>
   )
