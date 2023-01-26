@@ -3,7 +3,6 @@ import { VStack, Skeleton } from '@chakra-ui/react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from '../firebase'
 import { DatePicker } from '../components/DatePicker'
-import { MoodTracker } from '../components/MoodTracker'
 
 export interface DashboardProps {}
 
