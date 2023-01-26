@@ -1,35 +1,22 @@
-import { FC, useEffect } from 'react'
-import { Box, Heading, VStack } from '@chakra-ui/react'
+import { FC, useState } from 'react'
+import { VStack, Skeleton } from '@chakra-ui/react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useRouter } from 'next/router'
 import { auth } from '../firebase'
+import { DatePicker } from '../components/DatePicker'
 import { MoodTracker } from '../components/MoodTracker'
 
 export interface DashboardProps {}
 
 export const Dashboard: FC<DashboardProps> = ({}) => {
-  const [user, loading] = useAuthState(auth)
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!user && !loading) {
-      router.push('/sign-in')
-    }
-  }, [user, loading, router])
-
-  if (!user) {
-    return null
-  }
+  const [user] = useAuthState(auth)
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   return (
     <VStack w={'full'} align={'start'} spacing={8}>
-      <Heading>
-        Welcome back{' '}
-        <Box as={'span'} color={'orange.400'}>
-          {user.displayName}
-        </Box>
-      </Heading>
-      <MoodTracker user={user} />
+      <DatePicker
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
     </VStack>
   )
 }

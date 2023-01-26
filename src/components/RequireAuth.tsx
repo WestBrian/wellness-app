@@ -17,13 +17,9 @@ export const RequireAuth: FC<RequireAuthProps> = ({ children }) => {
     }
   }, [loading, user, router])
 
-  if (loading) {
+  if (!user) {
     return null
   }
 
-  if (user) {
-    return <>{children}</>
-  } else {
-    return null
-  }
+  return <>{children}</>
 }

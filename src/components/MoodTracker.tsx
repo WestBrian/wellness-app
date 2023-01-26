@@ -1,11 +1,17 @@
 import type { FC } from 'react'
-import { VStack, HStack, Button, Heading, Box } from '@chakra-ui/react'
+import {
+  VStack,
+  HStack,
+  IconButton,
+  Heading,
+  Box,
+  Icon,
+} from '@chakra-ui/react'
 import CryIcon from '../../public/cry.svg'
 import SadIcon from '../../public/sad.svg'
 import ExpressionlessIcon from '../../public/expressionless.svg'
 import SmileIcon from '../../public/smile.svg'
 import ExcitedIcon from '../../public/excited.svg'
-import Image from 'next/image'
 import {
   doc,
   collection,
@@ -19,8 +25,6 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { User } from 'firebase/auth'
 import { isSameDay } from 'date-fns'
 import { MoodConverter } from '../converters/mood-converter'
-
-const iconSize = 50
 
 const moods: { mood: string; icon: any }[] = [
   {
@@ -59,12 +63,13 @@ const MoodButton: FC<MoodButtonProps> = ({
   onClick,
 }) => {
   return (
-    <Button
+    <IconButton
+      icon={<Icon as={icon} boxSize={12} />}
       variant={'solid'}
       bg={isSelected ? 'orange.300' : 'orange.100'}
       shadow={'sm'}
-      w={`${iconSize + 25}px`}
-      h={`${iconSize + 25}px`}
+      w={'75px'}
+      h={'75px'}
       _hover={{
         bg: 'orange.300',
       }}
@@ -79,42 +84,35 @@ const MoodButton: FC<MoodButtonProps> = ({
       }}
       aria-label={mood}
       onClick={onClick}
-    >
-      <Box
-        w={`${iconSize}px`}
-        h={`${iconSize}px`}
-        minW={`${iconSize}px`}
-        minH={`${iconSize}px`}
-      >
-        <Image src={icon} width={iconSize} height={iconSize} alt={mood} />
-      </Box>
-    </Button>
+    />
   )
 }
 
 export interface MoodTrackerProps {
   user: User
+  selectedDate: Date
 }
 
-export const MoodTracker: FC<MoodTrackerProps> = ({ user }) => {
+export const MoodTracker: FC<MoodTrackerProps> = ({ user, selectedDate }) => {
   const moodRef = collection(db, `users/${user.uid}/moods`).withConverter(
     MoodConverter
   )
   const [moodData] = useCollectionData(query(moodRef))
-  const now = new Date()
-  const currentMood = moodData?.find((mood) => isSameDay(mood.date, now))
+  const currentMood = moodData?.find((mood) =>
+    isSameDay(mood.date, selectedDate)
+  )
 
   const saveMood = async (mood: number) => {
     if (currentMood) {
       updateDoc(doc(db, moodRef.path, currentMood.id), {
         mood,
-        date: serverTimestamp(),
+        date: selectedDate,
       })
     } else {
       addDoc(moodRef, {
         id: '-1',
         mood,
-        date: serverTimestamp(),
+        date: selectedDate,
       })
     }
   }
