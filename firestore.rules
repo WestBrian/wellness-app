@@ -4,5 +4,17 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+
+    match /users/{uid} {
+      allow read, write: if request.auth.uid == uid
+    }
+
+    match /users/{uid}/moods/{document=**} {
+      allow read, write: if request.auth.uid == uid
+    }
+
+    match /users/{uid}/activities/{document=**} {
+      allow read, write: if request.auth.uid == uid
+    }
   }
 }

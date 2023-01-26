@@ -1,13 +1,30 @@
 import type { FC } from 'react'
-import { VStack, HStack, Button, Heading, Box } from '@chakra-ui/react'
+import {
+  VStack,
+  HStack,
+  IconButton,
+  Heading,
+  Box,
+  Icon,
+} from '@chakra-ui/react'
 import CryIcon from '../../public/cry.svg'
 import SadIcon from '../../public/sad.svg'
 import ExpressionlessIcon from '../../public/expressionless.svg'
 import SmileIcon from '../../public/smile.svg'
 import ExcitedIcon from '../../public/excited.svg'
-import Image from 'next/image'
-
-const iconSize = 50
+import {
+  doc,
+  collection,
+  addDoc,
+  updateDoc,
+  query,
+  serverTimestamp,
+} from 'firebase/firestore'
+import { db } from '../firebase'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { User } from 'firebase/auth'
+import { isSameDay } from 'date-fns'
+import { MoodConverter } from '../converters/mood-converter'
 
 const moods: { mood: string; icon: any }[] = [
   {
@@ -35,18 +52,26 @@ const moods: { mood: string; icon: any }[] = [
 interface MoodButtonProps {
   mood: string
   icon: any
+  isSelected: boolean
+  onClick: () => void
 }
 
-const MoodButton: FC<MoodButtonProps> = ({ mood, icon }) => {
+const MoodButton: FC<MoodButtonProps> = ({
+  mood,
+  icon,
+  isSelected,
+  onClick,
+}) => {
   return (
-    <Button
+    <IconButton
+      icon={<Icon as={icon} boxSize={12} />}
       variant={'solid'}
-      bg={'orange.100'}
+      bg={isSelected ? 'orange.300' : 'orange.100'}
       shadow={'sm'}
-      w={`${iconSize + 25}px`}
-      h={`${iconSize + 25}px`}
+      w={'75px'}
+      h={'75px'}
       _hover={{
-        bg: 'orange.200',
+        bg: 'orange.300',
       }}
       _focus={{
         outline: 'none',
@@ -58,22 +83,40 @@ const MoodButton: FC<MoodButtonProps> = ({ mood, icon }) => {
         bg: 'orange.300',
       }}
       aria-label={mood}
-    >
-      <Box
-        w={`${iconSize}px`}
-        h={`${iconSize}px`}
-        minW={`${iconSize}px`}
-        minH={`${iconSize}px`}
-      >
-        <Image src={icon} width={iconSize} height={iconSize} alt={mood} />
-      </Box>
-    </Button>
+      onClick={onClick}
+    />
   )
 }
 
-export interface MoodTrackerProps {}
+export interface MoodTrackerProps {
+  user: User
+  selectedDate: Date
+}
 
-export const MoodTracker: FC<MoodTrackerProps> = ({}) => {
+export const MoodTracker: FC<MoodTrackerProps> = ({ user, selectedDate }) => {
+  const moodRef = collection(db, `users/${user.uid}/moods`).withConverter(
+    MoodConverter
+  )
+  const [moodData] = useCollectionData(query(moodRef))
+  const currentMood = moodData?.find((mood) =>
+    isSameDay(mood.date, selectedDate)
+  )
+
+  const saveMood = async (mood: number) => {
+    if (currentMood) {
+      updateDoc(doc(db, moodRef.path, currentMood.id), {
+        mood,
+        date: selectedDate,
+      })
+    } else {
+      addDoc(moodRef, {
+        id: '-1',
+        mood,
+        date: selectedDate,
+      })
+    }
+  }
+
   return (
     <VStack w={'full'} align={'start'} spacing={2}>
       <Heading
@@ -95,9 +138,13 @@ export const MoodTracker: FC<MoodTrackerProps> = ({}) => {
           },
         }}
       >
-        {moods.map((mood) => (
+        {moods.map((mood, index) => (
           <Box key={mood.mood}>
-            <MoodButton {...mood} />
+            <MoodButton
+              {...mood}
+              isSelected={currentMood?.mood === index + 1}
+              onClick={() => saveMood(index + 1)}
+            />
           </Box>
         ))}
       </HStack>
