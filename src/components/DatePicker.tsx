@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { Text, HStack, Icon, IconButton } from '@chakra-ui/react'
-import RightArrow from '../../public/angle-right.svg'
-import LeftArrow from '../../public/angle-left.svg'
+import RightArrow from '../../public/svgs/angle-right.svg'
+import LeftArrow from '../../public/svgs/angle-left.svg'
 import { format, addDays } from 'date-fns'
 
 export interface DatePickerProps {
