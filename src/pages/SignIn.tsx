@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { VStack, Heading, Text, Button, Icon } from '@chakra-ui/react'
-import GoogleLogo from '../../public/google.svg'
+import GoogleLogo from '../../public/svgs/google.svg'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { auth, db } from '../firebase'
 import { useRouter } from 'next/router'
