@@ -18,25 +18,15 @@ import {
   useConst,
 } from '@chakra-ui/react'
 import { FC, ReactNode, useEffect, useState } from 'react'
-import { addDays, format } from 'date-fns'
-import {
-  useCollectionData,
-  useDocumentData,
-} from 'react-firebase-hooks/firestore'
-import {
-  addDoc,
-  collection,
-  doc,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore'
+import { format } from 'date-fns'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { ActivityConverter } from '../converters/activity-converter'
 import { MoodConverter } from '../converters/mood-converter'
-
-const moodOptions = ['😭', '😢', '🙁', '😕', '😐', '🙂', '😀', '😄'].reverse()
+import { useMood } from '../hooks/useMood'
+import { moodOptions } from '../utils/getMoodEmoji'
 
 interface CustomMoodRadioProps {
   text: string
@@ -119,14 +109,7 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
   ).withConverter(ActivityConverter)
 
   const [activities] = useCollectionData(activitiesCol)
-  const [moods] = useCollectionData(
-    query(
-      moodCol,
-      where('date', '<', addDays(now, 1)),
-      where('date', '>', addDays(now, -1))
-    )
-  )
-  const currentMood = moods?.at(0)
+  const { mood: currentMood } = useMood(now)
 
   const {
     value: selectedMood,

@@ -55,10 +55,12 @@ export const Navbar: FC<NavbarProps> = ({}) => {
       </Flex>
       <Center>
         <Text
-          fontSize={'sm'}
+          fontSize={'md'}
           fontWeight={'extrabold'}
           textTransform={'uppercase'}
           letterSpacing={'wider'}
+          bgGradient={'linear(to-l, orange.400, red.400)'}
+          bgClip={'text'}
         >
           Wellness
         </Text>

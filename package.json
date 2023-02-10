@@ -6,7 +6,7 @@
     "dev": "concurrently \"npm run emulators\" \"next dev\"",
     "build": "next build",
     "start": "next start",
-    "emulators": "firebase emulators:start",
+    "emulators": "firebase emulators:start --import=data",
     "lint": "next lint",
     "format": "prettier --write \"{pages,src}/**/*\"",
     "typecheck": "tsc --noEmit"

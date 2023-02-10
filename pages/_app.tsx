@@ -3,12 +3,9 @@ import { ChakraProvider, Box } from '@chakra-ui/react'
 import { theme } from '../src/theme'
 import { Navbar } from '../src/components/Navbar'
 import { BottomBar } from '../src/components/BottomBar'
-import { Inter } from '@next/font/google'
 import Head from 'next/head'
 import { PWALinks } from '../src/components/PWALinks'
 import '../src/firebase'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -25,9 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <ChakraProvider theme={theme}>
-        <Box className={inter.className}>
+        <Box>
           <Navbar />
-          <Box as={'main'} p={4} mt={'74px'}>
+          <Box as={'main'} p={4} mt={'74px'} maxW={'container.md'} mx={'auto'}>
             <Component {...pageProps} />
           </Box>
           <BottomBar />
