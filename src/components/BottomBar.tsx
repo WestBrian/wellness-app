@@ -46,10 +46,12 @@ export const BottomBar: FC<BottomBarProps> = ({}) => {
       <Box
         bg={'orange.100'}
         w={'full'}
+        maxW={'500px'}
         px={4}
         py={3}
-        rounded={'full'}
-        shadow={'lg'}
+        mx={'auto'}
+        rounded={'2xl'}
+        shadow={'xl'}
       >
         <Flex justify={'space-between'} align={'center'} w={'full'} h={'full'}>
           <NavButton href={'/'} icon={HomeIcon} label={'Home'} />
