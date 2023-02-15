@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns'
+import { addDays, startOfDay, endOfDay } from 'date-fns'
 import { collection, query, where } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -13,8 +13,8 @@ export const useMood = (date: Date) => {
   const [moods] = useCollectionData(
     query(
       moodCol,
-      where('date', '<', addDays(date, 1)),
-      where('date', '>', addDays(date, -1))
+      where('date', '<', addDays(startOfDay(date), 1)),
+      where('date', '>', addDays(endOfDay(date), -1))
     )
   )
   const mood = moods?.at(0)
