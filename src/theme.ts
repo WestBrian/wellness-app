@@ -17,11 +17,12 @@ export const theme = extendTheme({
   },
   textStyles: {
     h2: {
-      fontSize: 'sm',
-      fontWeight: 'bold',
+      fontSize: 'md',
+      fontWeight: 'semibold',
       color: 'gray.700',
       letterSpacing: 'wide',
-      textTransform: 'uppercase',
     },
   },
+  initialColorMode: 'light',
+  useSystemColorMode: false,
 })

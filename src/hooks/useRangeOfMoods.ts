@@ -1,29 +1,17 @@
-import { addDays, endOfDay, isAfter, isBefore } from 'date-fns'
+import { isAfter, isBefore } from 'date-fns'
 import { collection, query, where } from 'firebase/firestore'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { MoodConverter } from '../converters/mood-converter'
 import { auth, db } from '../firebase'
 
-interface Options {
-  inclusive: boolean
-}
-
-export const usePreviousMoods = (date: Date, options?: Options) => {
-  const opts: Options = {
-    inclusive: false,
-    ...options,
-  }
-
+export const useRangeOfMoods = (start: Date, end: Date) => {
   const [user] = useAuthState(auth)
   const moodCol = collection(db, `users/${user!.uid}/moods`).withConverter(
     MoodConverter
   )
   const [moods] = useCollectionData(
-    query(
-      moodCol,
-      where('date', '<', endOfDay(opts.inclusive ? date : addDays(date, -1)))
-    )
+    query(moodCol, where('date', '>', start), where('date', '<', end))
   )
 
   const previousMoods = moods?.sort((m1, m2) => {
