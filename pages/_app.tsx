@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Box>
           <Navbar />
-          <Box as={'main'} p={4} mt={'74px'} maxW={'container.md'} mx={'auto'}>
+          <Box as={'main'} p={4} maxW={'container.md'} mx={'auto'} mb={'96px'}>
             <Component {...pageProps} />
           </Box>
           <BottomBar />

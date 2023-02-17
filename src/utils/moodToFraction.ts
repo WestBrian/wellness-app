@@ -1,7 +1,8 @@
 import type { MoodData } from '../types/mood'
 import { moodOptions } from './getMoodEmoji'
 
-export const moodToFraction = (mood: MoodData) => {
+export const moodToFraction = (mood: MoodData | number) => {
   const l = moodOptions.length
-  return (l - mood.mood + 1) / l
+  const x = typeof mood === 'number' ? mood : mood.mood
+  return (l - x + 1) / l
 }

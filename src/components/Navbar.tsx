@@ -28,6 +28,10 @@ export const Navbar: FC<NavbarProps> = ({}) => {
   const [user] = useAuthState(auth)
   const router = useRouter()
 
+  if (router.pathname === '/') {
+    return null
+  }
+
   return (
     <SimpleGrid
       as={'nav'}
