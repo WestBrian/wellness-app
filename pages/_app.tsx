@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { PWALinks } from '../src/components/PWALinks'
 import '../src/firebase'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, router }: AppProps) {
   return (
     <>
       <Head>
@@ -24,7 +24,14 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Box>
           <Navbar />
-          <Box as={'main'} p={4} maxW={'container.md'} mx={'auto'} mb={'96px'}>
+          <Box
+            as={'main'}
+            p={4}
+            maxW={'container.md'}
+            mx={'auto'}
+            mt={router.pathname === '/' ? '0' : '56px'}
+            mb={'96px'}
+          >
             <Component {...pageProps} />
           </Box>
           <BottomBar />

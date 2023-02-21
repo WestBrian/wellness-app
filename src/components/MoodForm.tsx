@@ -10,6 +10,8 @@ import {
   Box,
   Wrap,
   WrapItem,
+  Flex,
+  Link,
   chakra,
   useRadioGroup,
   useRadio,
@@ -27,6 +29,7 @@ import { ActivityConverter } from '../converters/activity-converter'
 import { MoodConverter } from '../converters/mood-converter'
 import { useMood } from '../hooks/useMood'
 import { moodOptions } from '../utils/getMoodEmoji'
+import NextLink from 'next/link'
 
 interface CustomMoodRadioProps {
   text: string
@@ -185,18 +188,31 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
             </HStack>
           </VStack>
           <VStack spacing={2} align={'start'}>
-            <Text textStyle={'h2'}>Activities</Text>
+            <Flex w={'full'} justify={'space-between'}>
+              <Text textStyle={'h2'}>Activities</Text>
+              <Link
+                as={NextLink}
+                href={'/user/activities'}
+                color={'blue.500'}
+                fontSize={'sm'}
+                onClick={onClose}
+              >
+                Edit
+              </Link>
+            </Flex>
             <Wrap>
-              {activities?.map(({ id, activity }, index) => (
-                <WrapItem key={id}>
-                  <CustomActivityCheckbox
-                    color={index}
-                    {...getCheckboxProps({ value: id })}
-                  >
-                    {activity}
-                  </CustomActivityCheckbox>
-                </WrapItem>
-              ))}
+              {activities
+                ?.filter((a) => a.enabled)
+                .map(({ id, activity }, index) => (
+                  <WrapItem key={id}>
+                    <CustomActivityCheckbox
+                      color={index}
+                      {...getCheckboxProps({ value: id })}
+                    >
+                      {activity}
+                    </CustomActivityCheckbox>
+                  </WrapItem>
+                ))}
             </Wrap>
           </VStack>
         </VStack>
