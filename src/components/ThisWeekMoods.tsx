@@ -42,7 +42,7 @@ const DayBar: FC<DayBarProps> = ({ date, mood }) => {
           />
         )}
       </Box>
-      <Text h={'24px'}>{mood ? getMoodEmoji(mood) : ''}</Text>
+      <Text h={'24px'}>{mood ? getMoodEmoji(mood) : '🫥'}</Text>
     </VStack>
   )
 }
