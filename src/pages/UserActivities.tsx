@@ -8,7 +8,7 @@ import {
   Icon,
   Input,
 } from '@chakra-ui/react'
-import { FC, useState, Fragment } from 'react'
+import { FC, useState, Fragment, useEffect } from 'react'
 import { SectionHeadingLarge } from '../components/SectionHeading'
 import { useActivities } from '../hooks/useActivities'
 import type { ActivityData } from '../types/activity'
@@ -23,6 +23,7 @@ import { doc, collection, updateDoc, addDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import type { User } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { useNavbar } from '../components/Navbar'
 
 interface ActivityBoxProps {
   activity: ActivityData
@@ -169,17 +170,19 @@ export const UserActivities: FC<UserActivitiesProps> = ({}) => {
   const [activities] = useActivities()
   const [addNew, setAddNew] = useState(false)
   const [user] = useAuthState(auth)
+  const { setTitle, setIcon, setActionLabel, setOnActionClick } = useNavbar()
+
+  useEffect(() => {
+    setTitle('My Activities')
+    setIcon('plus')
+    setActionLabel('Add activity')
+    setOnActionClick(() => {
+      return () => setAddNew(true)
+    })
+  }, [setTitle, setIcon, setActionLabel, setOnActionClick])
 
   return (
     <VStack w={'full'} align={'start'} spacing={4}>
-      <Flex w={'full'} justify={'space-between'} align={'center'}>
-        <SectionHeadingLarge>My Activities</SectionHeadingLarge>
-        <IconButton
-          icon={<Icon as={PlusIcon} />}
-          aria-label={'Add'}
-          onClick={() => setAddNew(true)}
-        />
-      </Flex>
       <VStack w={'full'} align={'start'} divider={<StackDivider />}>
         <AnimatePresence mode={'popLayout'}>
           {addNew && (

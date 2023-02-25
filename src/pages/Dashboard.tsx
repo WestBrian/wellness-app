@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import {
   useConst,
   VStack,
@@ -17,6 +17,7 @@ import AngleRightIcon from '../../public/svgs/angle-right.svg'
 import { TopDays } from '../components/TopDays'
 import { QuickInsights } from '../components/QuickInsights'
 import { TopActivities } from '../components/TopActivities'
+import { useNavbar } from '../components/Navbar'
 
 export interface DashboardProps {}
 
@@ -28,6 +29,11 @@ export const Dashboard: FC<DashboardProps> = ({}) => {
     endOfMonth(date)
   )
   const moods = previousMoods?.reverse()
+  const { setTitle } = useNavbar()
+
+  useEffect(() => {
+    setTitle('Insights')
+  }, [setTitle])
 
   return (
     <VStack w={'full'} align={'start'} spacing={8}>
@@ -77,6 +83,7 @@ export const Dashboard: FC<DashboardProps> = ({}) => {
                     },
                   },
                 },
+                clip: false,
               }}
             />
           )}
