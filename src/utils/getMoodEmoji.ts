@@ -8,7 +8,7 @@ export const moodOptions = [
   '😐',
   '🙂',
   '😀',
-  '😄',
+  '😆',
 ].reverse()
 
 export const getMoodEmoji = (mood: MoodData | number) => {

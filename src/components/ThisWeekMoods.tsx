@@ -1,6 +1,6 @@
 import { Box, HStack, useConst, VStack, Text } from '@chakra-ui/react'
 import type { FC } from 'react'
-import { SectionHeading } from './SectionHeading'
+import { SectionHeadingLarge } from './SectionHeading'
 import {
   startOfWeek,
   endOfWeek,
@@ -58,7 +58,7 @@ export const ThisWeekMoods: FC<ThisWeekMoodsProps> = ({}) => {
 
   return (
     <VStack w={'full'} align={'start'} spacing={4}>
-      <SectionHeading>This Week</SectionHeading>
+      <SectionHeadingLarge>This Week</SectionHeadingLarge>
       <HStack w={'full'} spacing={6}>
         {days.map((date) => (
           <DayBar
