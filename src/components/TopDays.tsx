@@ -1,11 +1,9 @@
 import type { FC } from 'react'
-import { HStack, VStack, Text, Heading, StackDivider } from '@chakra-ui/react'
-import { SectionHeading, SectionHeadingSmall } from './SectionHeading'
+import { HStack, VStack, Text, StackDivider } from '@chakra-ui/react'
+import { SectionHeadingSmall } from './SectionHeading'
 import type { MoodData } from '../types/mood'
-import { getDay, Day } from 'date-fns'
+import { getDay } from 'date-fns'
 import { findAverageMood } from '../utils/findAverageMood'
-import { moodToFraction } from '../utils/moodToFraction'
-import { toPercent } from '../utils/toPercent'
 import { getMoodEmoji } from '../utils/getMoodEmoji'
 
 export const daysOfTheWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

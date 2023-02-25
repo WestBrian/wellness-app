@@ -9,7 +9,7 @@ import {
   Input,
 } from '@chakra-ui/react'
 import { FC, useState, Fragment } from 'react'
-import { SectionHeading } from '../components/SectionHeading'
+import { SectionHeadingLarge } from '../components/SectionHeading'
 import { useActivities } from '../hooks/useActivities'
 import type { ActivityData } from '../types/activity'
 import PencilIcon from '../../public/svgs/pencil.svg'
@@ -173,7 +173,7 @@ export const UserActivities: FC<UserActivitiesProps> = ({}) => {
   return (
     <VStack w={'full'} align={'start'} spacing={4}>
       <Flex w={'full'} justify={'space-between'} align={'center'}>
-        <SectionHeading>My Activities</SectionHeading>
+        <SectionHeadingLarge>My Activities</SectionHeadingLarge>
         <IconButton
           icon={<Icon as={PlusIcon} />}
           aria-label={'Add'}
