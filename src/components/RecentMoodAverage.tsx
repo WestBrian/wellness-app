@@ -13,7 +13,7 @@ import { determineTrend } from '../utils/determineTrend'
 import { findAverageMood } from '../utils/findAverageMood'
 import { getMoodEmoji } from '../utils/getMoodEmoji'
 import { moodToFraction } from '../utils/moodToFraction'
-import { SectionHeading } from './SectionHeading'
+import { SectionHeadingLarge } from './SectionHeading'
 
 export interface RecentMoodAverageProps {}
 
@@ -46,7 +46,7 @@ export const RecentMoodAverage: FC<RecentMoodAverageProps> = ({}) => {
 
   return (
     <VStack w={'full'} align={'start'} spacing={4}>
-      <SectionHeading>Recent Mood Average</SectionHeading>
+      <SectionHeadingLarge>Recent Mood Average</SectionHeadingLarge>
       <HStack spacing={6} align={'start'}>
         <CircularProgress size={'75px'} color={'orange.400'} value={value}>
           <CircularProgressLabel fontSize={'3xl'}>

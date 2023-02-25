@@ -5,7 +5,16 @@ import { Navbar } from '../src/components/Navbar'
 import { BottomBar } from '../src/components/BottomBar'
 import Head from 'next/head'
 import { PWALinks } from '../src/components/PWALinks'
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+} from 'chart.js'
 import '../src/firebase'
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement)
 
 export default function App({ Component, pageProps, router }: AppProps) {
   return (
