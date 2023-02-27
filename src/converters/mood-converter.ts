@@ -7,6 +7,7 @@ export const MoodConverter: FirestoreDataConverter<MoodData> = {
       mood: modelObject.mood,
       date: modelObject.date,
       activities: modelObject.activities,
+      weather: modelObject.weather,
     }
   },
   fromFirestore: (snapshot, options) => {
@@ -16,6 +17,7 @@ export const MoodConverter: FirestoreDataConverter<MoodData> = {
       mood: data.mood,
       date: data.date.toDate(),
       activities: data.activities,
+      weather: data.weather,
     }
   },
 }

@@ -30,6 +30,9 @@ import { MoodConverter } from '../converters/mood-converter'
 import { useMood } from '../hooks/useMood'
 import { moodOptions } from '../utils/getMoodEmoji'
 import NextLink from 'next/link'
+import { useUserSettings } from '../hooks/useUserSettings'
+import { getLocation } from '../utils/getLocation'
+import { getForecast } from '../utils/getForecast'
 
 interface CustomMoodRadioProps {
   text: string
@@ -101,7 +104,9 @@ export interface MoodFormProps {
 export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
   const [user] = useAuthState(auth)
   const now = useConst(new Date())
+  const [settings] = useUserSettings()
   const [hasRehydrated, setHasRehydrated] = useState(false)
+  const [saving, setSaving] = useState(false)
 
   const moodCol = collection(db, `users/${user!.uid}/moods`).withConverter(
     MoodConverter
@@ -135,7 +140,21 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
   }, [currentMood, hasRehydrated, setSelectedMood, setSelectedActivities])
 
   // Refactor to a more accessible solution
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setSaving(true)
+    let weather = undefined
+
+    if (settings?.collectWeather) {
+      const forecast = await getForecast()
+      const today = forecast.forecast.forecastday.at(0)
+      if (today) {
+        weather = {
+          temp: today.day.maxtemp_f,
+          condition: today.day.condition.code,
+        }
+      }
+    }
+
     if (currentMood) {
       updateDoc(doc(moodCol, currentMood.id), {
         mood: Number(selectedMood),
@@ -148,9 +167,11 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
         mood: Number(selectedMood),
         date: now,
         activities: selectedActivities as string[],
+        weather,
       })
     }
     onClose()
+    setSaving(false)
   }
 
   return (
@@ -222,7 +243,11 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
         <Button variant="outline" mr={3} onClick={onClose}>
           Cancel
         </Button>
-        <Button colorScheme={'orange'} onClick={handleSubmit}>
+        <Button
+          colorScheme={'orange'}
+          isLoading={saving}
+          onClick={handleSubmit}
+        >
           {currentMood ? 'Update' : 'Save'}
         </Button>
       </DrawerFooter>
