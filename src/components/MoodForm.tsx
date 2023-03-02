@@ -18,6 +18,7 @@ import {
   useCheckbox,
   useCheckboxGroup,
   useConst,
+  useToast,
 } from '@chakra-ui/react'
 import { FC, ReactNode, useEffect, useState } from 'react'
 import { format } from 'date-fns'
@@ -31,7 +32,6 @@ import { useMood } from '../hooks/useMood'
 import { moodOptions } from '../utils/getMoodEmoji'
 import NextLink from 'next/link'
 import { useUserSettings } from '../hooks/useUserSettings'
-import { getLocation } from '../utils/getLocation'
 import { getForecast } from '../utils/getForecast'
 
 interface CustomMoodRadioProps {
@@ -107,6 +107,7 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
   const [settings] = useUserSettings()
   const [hasRehydrated, setHasRehydrated] = useState(false)
   const [saving, setSaving] = useState(false)
+  const toast = useToast()
 
   const moodCol = collection(db, `users/${user!.uid}/moods`).withConverter(
     MoodConverter
@@ -144,14 +145,25 @@ export const MoodForm: FC<MoodFormProps> = ({ onClose }) => {
     setSaving(true)
     let weather = undefined
 
-    if (settings?.collectWeather) {
-      const forecast = await getForecast()
-      const today = forecast.forecast.forecastday.at(0)
-      if (today) {
-        weather = {
-          temp: today.day.maxtemp_f,
-          condition: today.day.condition.code,
+    if (!currentMood && settings?.collectWeather) {
+      try {
+        const forecast = await getForecast()
+        const today = forecast.forecast.forecastday.at(0)
+        if (today) {
+          weather = {
+            temp: today.day.maxtemp_f,
+            condition: today.day.condition.code,
+          }
         }
+      } catch (e) {
+        toast({
+          title: 'Weather Data Not Saved',
+          description:
+            'Try changing your location services within your settings',
+          status: 'warning',
+          duration: 9000,
+          isClosable: true,
+        })
       }
     }
 
