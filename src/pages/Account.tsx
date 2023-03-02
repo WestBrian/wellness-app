@@ -16,7 +16,6 @@ import { SectionHeadingSmall } from '../components/SectionHeading'
 import { doc, updateDoc } from 'firebase/firestore'
 import { useUserSettings } from '../hooks/useUserSettings'
 import { UserConverter } from '../converters/user-settings-converter'
-import { getLocation } from '../utils/getLocation'
 
 export interface AccountProps {}
 
@@ -32,10 +31,6 @@ export const Account: FC<AccountProps> = ({}) => {
     updateDoc(userDoc, {
       collectWeather: checked,
     })
-
-    if (checked) {
-      getLocation()
-    }
   }
 
   useEffect(() => {

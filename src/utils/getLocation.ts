@@ -1,8 +1,31 @@
-export const getLocation = async (): Promise<GeolocationPosition> => {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject('Not supported')
+export function getLocation(): Promise<GeolocationPosition> {
+  const promiseArray = []
+
+  // @ts-ignore
+  if (navigator.standalone) {
+    promiseArray.push(
+      new Promise((resolve, reject) => {
+        const wait = setTimeout(() => {
+          clearTimeout(wait)
+          reject('Location has timed out')
+        }, 4000)
+      })
+    )
+  }
+
+  const getCurrentPositionPromise = new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(resolve, reject, {
+        timeout: 5000,
+        maximumAge: 2000,
+        enableHighAccuracy: true,
+      })
+    } else {
+      reject(new Error('Browser does not support geolocation!'))
     }
-    navigator.geolocation.getCurrentPosition(resolve, reject)
   })
+
+  promiseArray.push(getCurrentPositionPromise)
+
+  return Promise.race(promiseArray) as Promise<GeolocationPosition>
 }
