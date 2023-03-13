@@ -1,4 +1,4 @@
-import { VStack, Text, Flex, Box } from '@chakra-ui/react'
+import { VStack, Text, Flex, Box, Link } from '@chakra-ui/react'
 import type { FC } from 'react'
 import { useSortedActivities } from '../hooks/useSortedActivities'
 import type { MoodData } from '../types/mood'
@@ -6,6 +6,7 @@ import { getMoodEmoji } from '../utils/getMoodEmoji'
 import { moodToFraction } from '../utils/moodToFraction'
 import { toPercent } from '../utils/toPercent'
 import { SectionHeadingSmall } from './SectionHeading'
+import NextLink from 'next/link'
 
 export interface TopActivitiesProps {
   moods: MoodData[]
@@ -16,13 +17,24 @@ export const TopActivities: FC<TopActivitiesProps> = ({ moods }) => {
 
   return (
     <VStack w={'full'} align={'start'} spacing={2}>
-      <SectionHeadingSmall>
-        Top{' '}
-        {sortedActivities && sortedActivities.length > 3
-          ? '3'
-          : sortedActivities?.length}{' '}
-        Activities
-      </SectionHeadingSmall>
+      <Flex w={'full'} justify={'space-between'} align={'center'}>
+        <SectionHeadingSmall>
+          Top{' '}
+          {sortedActivities && sortedActivities.length > 3
+            ? '3'
+            : sortedActivities?.length}{' '}
+          Activities
+        </SectionHeadingSmall>
+        <Link
+          as={NextLink}
+          href={'/activities'}
+          color={'blue.500'}
+          fontSize={'xs'}
+          fontWeight={'semibold'}
+        >
+          More details
+        </Link>
+      </Flex>
       {sortedActivities && (
         <VStack w={'full'} align={'start'}>
           {sortedActivities.slice(0, 3).map((data) => (

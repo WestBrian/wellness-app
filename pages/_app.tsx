@@ -12,6 +12,7 @@ import {
   LineElement,
   PointElement,
 } from 'chart.js'
+import { Provider } from 'jotai'
 import '../src/firebase'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement)
@@ -32,24 +33,26 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <ChakraProvider theme={theme}>
-        <NavbarProvider>
-          <Box>
-            <Navbar />
-            <Box
-              as={'main'}
-              p={4}
-              maxW={'container.md'}
-              mx={'auto'}
-              mt={'56px'}
-              mb={'96px'}
-            >
-              <Component {...pageProps} />
+      <Provider>
+        <ChakraProvider theme={theme}>
+          <NavbarProvider>
+            <Box>
+              <Navbar />
+              <Box
+                as={'main'}
+                p={4}
+                maxW={'container.md'}
+                mx={'auto'}
+                mt={'56px'}
+                mb={'96px'}
+              >
+                <Component {...pageProps} />
+              </Box>
+              <BottomBar />
             </Box>
-            <BottomBar />
-          </Box>
-        </NavbarProvider>
-      </ChakraProvider>
+          </NavbarProvider>
+        </ChakraProvider>
+      </Provider>
     </>
   )
 }
